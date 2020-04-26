@@ -1,0 +1,13 @@
+general:
+  debug: false
+
+database:
+  host: localhost
+  port: 3306
+  user: gistat_user
+  password: pass
+  database: gistat
+
+cron:
+  name: gistat_parsing
+  firefox_path: external/geckodriver.exe
