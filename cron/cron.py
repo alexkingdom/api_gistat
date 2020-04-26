@@ -15,9 +15,6 @@ class Cron:
     IN_PROGRESS = 1
     NO_PROGRESS = 0
 
-    GENDER_MALE = 'male'
-    GENDER_FEMALE = 'female'
-
     def __init__(self, debug=False):
         self.__load_config()
         self.__connect_to_db()
@@ -57,8 +54,7 @@ class Cron:
                 self.__add_main_stat(general_stat, updated)
                 other_cases = stat.get_other_cases()
 
-                self.__add_by_gender_stat(self.GENDER_MALE, other_cases['men'], updated)
-                self.__add_by_gender_stat(self.GENDER_FEMALE, other_cases['women'], updated)
+                self.__add_by_gender_stat(other_cases['men'], other_cases['women'], updated)
                 self.__add_pregnant_stat(other_cases['pregnant'], updated)
                 self.__add_cases_by_type(other_cases['cases_local'], other_cases['cases_imported'], updated)
 
@@ -106,7 +102,8 @@ class Cron:
             self.date_now()
         ]
 
-        self.cursor.execute('INSERT INTO `cases_by_genders` (male_cases,female_cases,updated,added) VALUES (%s,%s,%s,%s)', params)
+        self.cursor.execute('INSERT INTO `cases_by_genders` (male_cases,female_cases,updated,added) VALUES (%s,%s,%s,'
+                            '%s)', params)
         self.db.commit()
 
     def __add_pregnant_stat(self, cases, updated):
